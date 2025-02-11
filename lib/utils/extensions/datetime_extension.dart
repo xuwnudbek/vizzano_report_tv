@@ -1,5 +1,7 @@
 extension DatetimeExtension on DateTime {
   String get format {
-    return "$day.$month.$year";
+    return "$year-$month-$day";
   }
+
+  String get stringTime => "${hour < 10 ? "0" : ""}$hour:${minute < 10 ? "0" : ""}$minute:${second < 10 ? "0" : ""}$second";
 }

@@ -1,0 +1,72 @@
+{
+    "sewing_outputs": [
+        {
+            "model": {
+                "id": 52,
+                "name": "8м9625",
+                "rasxod": "200"
+            },
+            "submodel": {
+                "id": 84,
+                "name": "shim"
+            },
+            "group": {
+                "id": 12,
+                "name": "1 - patok "
+            },
+            "total_quantity": 598,
+            "today_quantity": 319
+        },
+        {
+            "model": {
+                "id": 52,
+                "name": "8м9625",
+                "rasxod": "200"
+            },
+            "submodel": {
+                "id": 85,
+                "name": "kastyum"
+            },
+            "group": {
+                "id": 19,
+                "name": "2-patok"
+            },
+            "total_quantity": 45,
+            "today_quantity": 45
+        },
+        {
+            "model": {
+                "id": 52,
+                "name": "8м9625",
+                "rasxod": "200"
+            },
+            "submodel": {
+                "id": 84,
+                "name": "shim"
+            },
+            "group": {
+                "id": 12,
+                "name": "1 - patok "
+            },
+            "total_quantity": 45,
+            "today_quantity": 45
+        }
+    ],
+    "motivations": [
+        {
+            "title": "Buyuk natijalarga birgalikda erishamiz"
+        },
+        {
+            "title": "Maqsadga birgalikda erishamiz"
+        },
+        {
+            "title": "Rejalashtirish – ishda muvaffaqiyatning siri"
+        },
+        {
+            "title": "Bugungi yaxshidan ertangi mukammal sari"
+        },
+        {
+            "title": "Yaxshilik yo'lida birlashamiz"
+        }
+    ]
+}

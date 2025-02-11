@@ -8,7 +8,7 @@ enum Result { success, error }
 
 class Api {
   static String baseUrl = "176.124.208.61:2005";
-  static String middle = "api/groupMaster";
+  static String middle = "api";
   static String login = "api/login";
   static String orders = "$middle/orders";
   static String groups = "$middle/groups";

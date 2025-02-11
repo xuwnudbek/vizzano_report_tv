@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:vizzano_report_tv/ui/splash/splash_page.dart';
 import 'package:vizzano_report_tv/utils/theme/app_theme.dart';
 
@@ -18,7 +19,9 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Group Master',
       theme: AppTheme.lightTheme,
-      home: SplashPage(),
+      home: ResponsiveSizer(builder: (context, orientation, deviceType) {
+        return SplashPage();
+      }),
     );
   }
 }
