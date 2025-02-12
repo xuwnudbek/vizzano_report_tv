@@ -1,11 +1,11 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:vizzano_report_tv/ui/home/provider/home_provider.dart';
 import 'package:vizzano_report_tv/utils/extensions/datetime_extension.dart';
-import 'package:vizzano_report_tv/utils/extensions/time_of_day_extension.dart';
+import 'package:vizzano_report_tv/utils/extensions/list_extension.dart';
+import 'package:vizzano_report_tv/utils/extensions/num_extension.dart';
 import 'package:vizzano_report_tv/utils/theme/app_colors.dart';
 
 class HomePage extends StatelessWidget {
@@ -40,47 +40,42 @@ class HomePage extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                                child: provider.motivations.isEmpty
-                                    ? Center(
-                                        child: Text("Charchamanglar!"),
-                                      )
-                                    : Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 11,
-                                            child: DefaultTextStyle(
-                                              style: TextStyle(
-                                                fontSize: 20.sp,
-                                                fontFamily: 'Montserrat',
-                                                color: Colors.white,
-                                              ),
-                                              child: AnimatedTextKit(
-                                                repeatForever: true,
-                                                animatedTexts: [
-                                                  ...provider.motivations.map(
-                                                    (motivation) => FadeAnimatedText(
-                                                      motivation['title'] ?? "Unknown",
-                                                      fadeOutBegin: 0.6,
-                                                      fadeInEnd: 0.3,
-                                                      textAlign: TextAlign.center,
-                                                      duration: const Duration(seconds: 10),
-                                                    ),
-                                                  ),
-                                                ],
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: DefaultTextStyle(
+                                        style: textTheme.titleMedium?.copyWith(
+                                              fontSize: 18.sp,
+                                              color: Colors.white,
+                                            ) ??
+                                            TextStyle(),
+                                        child: AnimatedTextKit(
+                                          repeatForever: true,
+                                          animatedTexts: [
+                                            ...provider.motivations.map(
+                                              (motivation) => FadeAnimatedText(
+                                                motivation['title'] ?? "Unknown",
+                                                fadeOutBegin: 0.6,
+                                                fadeInEnd: 0.3,
+                                                textAlign: TextAlign.center,
+                                                duration: const Duration(seconds: 10),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                          provider.sewingOutputs.isEmpty
-                              ? Center(
-                                  child: Text("Ma'lumotlar topilmadi!"),
-                                )
-                              : Expanded(
-                                  child: Container(
+                          Expanded(
+                            child: provider.sewingOutputs.isEmpty
+                                ? Center(
+                                    child: Text("Ma'lumotlar topilmadi!"),
+                                  )
+                                : Container(
                                     padding: EdgeInsets.all(8),
                                     decoration: BoxDecoration(
                                       color: AppColors.light,
@@ -96,9 +91,12 @@ class HomePage extends StatelessWidget {
                                       columnWidths: {
                                         0: FixedColumnWidth(100),
                                         1: FlexColumnWidth(1),
-                                        2: FlexColumnWidth(3),
-                                        3: FlexColumnWidth(1),
+                                        2: FlexColumnWidth(1),
+                                        3: FlexColumnWidth(3),
                                         4: FlexColumnWidth(1),
+                                        5: FlexColumnWidth(1),
+                                        6: FlexColumnWidth(1),
+                                        7: FlexColumnWidth(1),
                                       },
                                       children: [
                                         TableRow(
@@ -125,6 +123,17 @@ class HomePage extends StatelessWidget {
                                             TableCell(
                                               child: Padding(
                                                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                                                child: Center(
+                                                  child: Text(
+                                                    "Ishchilar",
+                                                    style: textTheme.titleLarge,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            TableCell(
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                                                 child: Text(
                                                   "Maxsulot",
                                                   style: textTheme.titleLarge,
@@ -136,7 +145,18 @@ class HomePage extends StatelessWidget {
                                                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                                                 child: Center(
                                                   child: Text(
-                                                    "Miqdor",
+                                                    "Reja",
+                                                    style: textTheme.titleLarge,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            TableCell(
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                                                child: Center(
+                                                  child: Text(
+                                                    "Real",
                                                     style: textTheme.titleLarge,
                                                   ),
                                                 ),
@@ -153,12 +173,29 @@ class HomePage extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
+                                            TableCell(
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                                                child: Center(
+                                                  child: Text(
+                                                    "Natija",
+                                                    style: textTheme.titleLarge,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                           ],
                                         ),
-                                        ...provider.sewingOutputs.map((sewingOutput) {
+                                        ...provider.sewingOutputs.sortByPercentage.map((sewingOutput) {
                                           int index = provider.sewingOutputs.indexOf(sewingOutput);
 
                                           String emoji = ["🥇", "🥈", "🥉"].elementAtOrNull(index) ?? "";
+
+                                          int todayPlan = int.tryParse("${sewingOutput['today_plan']}") ?? 0;
+                                          int todayQuantity = int.tryParse("${sewingOutput['today_quantity']}") ?? 0;
+                                          int totalQuantity = int.tryParse("${sewingOutput['total_quantity']}") ?? 0;
+
+                                          double percentage = provider.calcultePercentage(todayPlan, todayQuantity);
 
                                           return TableRow(
                                             decoration: BoxDecoration(
@@ -185,24 +222,39 @@ class HomePage extends StatelessWidget {
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                                child: Center(
+                                                  child: Text(
+                                                    "${(int.tryParse("${sewingOutput['employee_count']}") ?? 0).toPretty} ta",
+                                                    style: textTheme.bodyLarge,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                                 child: Text.rich(
-                                                  TextSpan(text: sewingOutput['model']?['name'] ?? "Unknown", style: textTheme.bodyLarge?.copyWith(), children: [
-                                                    TextSpan(
-                                                      text: " — ",
-                                                      style: textTheme.bodyLarge,
+                                                  TextSpan(
+                                                    text: sewingOutput['model']?['name'] ?? "Unknown",
+                                                    style: textTheme.bodyLarge?.copyWith(
+                                                      fontWeight: FontWeight.w600,
                                                     ),
-                                                    TextSpan(
-                                                      text: sewingOutput['submodel']?['name'] ?? "Unknown",
-                                                      style: textTheme.bodyLarge?.copyWith(),
-                                                    ),
-                                                  ]),
+                                                    children: [
+                                                      TextSpan(
+                                                        text: " — ",
+                                                        style: textTheme.bodyLarge,
+                                                      ),
+                                                      TextSpan(
+                                                        text: sewingOutput['submodel']?['name'] ?? "Unknown",
+                                                        style: textTheme.bodyLarge?.copyWith(),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                                 child: Center(
                                                   child: Text(
-                                                    "${sewingOutput['today_quantity'] ?? 0}",
+                                                    "${todayPlan.toPretty} ta",
                                                     style: textTheme.bodyLarge,
                                                   ),
                                                 ),
@@ -211,8 +263,28 @@ class HomePage extends StatelessWidget {
                                                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                                 child: Center(
                                                   child: Text(
-                                                    "${sewingOutput['total_quantity'] ?? 0}",
+                                                    "${todayQuantity.toPretty} ta",
                                                     style: textTheme.bodyLarge,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                                child: Center(
+                                                  child: Text(
+                                                    "${totalQuantity.toPretty} ta",
+                                                    style: textTheme.bodyLarge,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                                child: Center(
+                                                  child: Text(
+                                                    "${percentage.toStringAsFixed(1)}%",
+                                                    style: textTheme.titleLarge?.copyWith(
+                                                      color: percentage >= 100 ? Colors.green : Colors.red,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -222,7 +294,7 @@ class HomePage extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                ),
+                          ),
                           Container(
                             width: constraints.maxWidth - 16,
                             height: 60,
@@ -251,9 +323,9 @@ class HomePage extends StatelessWidget {
                                 // current real time
                                 Text(
                                   provider.time,
-                                  style: textTheme.titleSmall?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 19.sp,
+                                  style: textTheme.titleMedium?.copyWith(
+                                    fontSize: constraints.maxWidth / 45,
+                                    color: AppColors.dark,
                                   ),
                                 ),
                               ],

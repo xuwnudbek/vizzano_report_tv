@@ -20,7 +20,13 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List _motivations = [];
+  List _motivations = [
+    {"title": "Buyuk natijalarga birgalikda erishamiz"},
+    {"title": "Maqsadga birgalikda erishamiz"},
+    {"title": "Rejalashtirish - ishda muvaffaqiyatning siri"},
+    {"title": "Bugungi yaxshidan ertangi mukammal sari"},
+    {"title": "Yaxshilik yo'lida birlashamiz"}
+  ];
   List get motivations => _motivations;
   set motivations(List value) {
     _motivations = value;
@@ -69,6 +75,13 @@ class HomeProvider extends ChangeNotifier {
     isLoading = false;
   }
 
+  double calcultePercentage(int value, int total) {
+    if (value.isInfinite || total.isInfinite) return 0;
+    if (value == 0 || total == 0) return 0;
+
+    return (total * 100) / value;
+  }
+
   Future<void> getSewingOutputs({
     DateTime? startDate,
     DateTime? endDate,
@@ -80,7 +93,14 @@ class HomeProvider extends ChangeNotifier {
 
     if (res['status'] == Result.success) {
       sewingOutputs = (res['data']?['sewing_outputs']) ?? [];
-      motivations = (res['data']?['motivations']) ?? [];
+      motivations = (res['data']?['motivations']) ??
+          [
+            {"title": "Buyuk natijalarga birgalikda erishamiz"},
+            {"title": "Maqsadga birgalikda erishamiz"},
+            {"title": "Rejalashtirish - ishda muvaffaqiyatning siri"},
+            {"title": "Bugungi yaxshidan ertangi mukammal sari"},
+            {"title": "Yaxshilik yo'lida birlashamiz"}
+          ];
     }
 
     updatedAt = DateTime.now();

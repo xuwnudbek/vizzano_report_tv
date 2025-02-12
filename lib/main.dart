@@ -17,11 +17,13 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Group Master',
+      title: 'Vizzano | Kunlik hisobot',
       theme: AppTheme.lightTheme,
-      home: ResponsiveSizer(builder: (context, orientation, deviceType) {
-        return SplashPage();
-      }),
+      home: ResponsiveSizer(
+        builder: (context, orientation, deviceType) {
+          return SplashPage();
+        },
+      ),
     );
   }
 }

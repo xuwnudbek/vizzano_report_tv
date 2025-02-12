@@ -1,18 +1,17 @@
-extension NumExtension on num {
-  String get toCurrency {
-    // 1000.0 -> 1,000.0
-    if (toString().contains(".")) {
-      final split = toStringAsFixed(2).split(".");
-      final first = split[0];
-      return first.replaceAllMapped(
-        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-        (Match match) => '${match[1]},',
-      );
+extension NumExtensions on num {
+  String get toPretty {
+    String reversed = String.fromCharCodes(abs().toString().codeUnits.reversed);
+
+    String arr = "";
+
+    for (var i = 0; i < reversed.length; i++) {
+      arr += reversed[i];
+
+      if (i != 0 && i % 2 == 0 && reversed.length > 3) {
+        arr += ",";
+      }
     }
 
-    return toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match match) => '${match[1]},',
-    );
+    return String.fromCharCodes(arr.codeUnits.reversed);
   }
 }
